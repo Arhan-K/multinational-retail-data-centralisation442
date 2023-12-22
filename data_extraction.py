@@ -78,7 +78,8 @@ class DataExtractor:
         s3 = boto3.client('s3')#, access_key, secret_key)
         response = s3.get_object(Bucket=bucket_name, Key=object_key)
         df = pd.read_csv(io.BytesIO(response['Body'].read()))
-        print("s3 extract")
+        #print("s3 extract")
+        df.to_csv('s3_csv.csv', index = False)
         return df
 
     def extract_from_json(self, json_link):

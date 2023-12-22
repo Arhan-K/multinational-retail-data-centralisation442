@@ -28,11 +28,7 @@ class DataCleaning:
         for email in false_emails:
             df['email_address'] = df['email_address'].replace(email, np.nan)
         df = df.replace('NULL', np.nan)
-        df = df.dropna()
-        def invalid_email(email):
-             if not '@' in email or not '.' in email:
-                    return email
-             
+        df = df.dropna()     
         #df.loc[df['email_address'].apply(invalid_email()) 'GGB', 'country_code'] = 'GB'
         df.loc[df['country_code'] == 'GGB', 'country_code'] = 'GB'
         print("clean user data")
@@ -52,6 +48,7 @@ class DataCleaning:
     def clean_products_data(self, df):
         df.loc[df['weight'] == '77g .', 'weight'] = '77g'
         df.loc[df['weight'] == '16oz', 'weight'] = '0.454kg'
+        df = df['EAN'].dropna(how = 'all')
         def weight_conversion(weight):
                 if 'na' in str(weight):
                         str_1 = str(weight).split('na')[0]
@@ -69,14 +66,11 @@ class DataCleaning:
                                 unit = 'g'
                                 b = float(b[:-1])
                         weight = a * b
-                #if str(weight)[-2] != 'k':
-                #        gram_weight = float(str(weight)[:-1])
-                #        weight = gram_weight / 100
+                if str(weight)[-2] != 'k':
+                        gram_weight = float(str(weight)[:-1])
+                        weight = gram_weight / 100
                 return f"{weight}g"
-              #weight = self.weight
-              #weight = float(weight) / 100
-              #return weight
-        df['weight'] = df['weight'].apply(weight_conversion)
+        df = df['weight'].apply(weight_conversion)
         #df['weight'].loc[:, 'weight'] = df['weight'].loc[:,'weight'].astype('str').apply(lambda x : weight_conversion(x))
         df.loc[str(df['weight'])[-1] != 'g', 'weight'] = np.nan
         df = df.dropna()
@@ -127,6 +121,7 @@ json_address = "https://data-handling-public.s3.eu-west-1.amazonaws.com/date_det
 #clean_store_df = dc.clean_store_data(rough_store_df)
 rough_products_df = de.extract_from_s3(address)
 clean_products_df = dc.clean_products_data(rough_products_df)
+#clean_products_df.to_csv('clean_s3_csv.csv', index = False)
 #rough_orders_df = de.extract_from_json(json_address)
 #clean_orders_df = dc.clean_orders_data(rough_orders_df)
 
@@ -135,6 +130,8 @@ du = database_utils.DatabaseConnector()
 #du.upload_to_db(clean_card_df, 'dim_card_details')
 #print("upload dim_card_details")
 #du.upload_to_db(clean_store_df, 'dim_store_details')
+#print("upload dim_store_details")
 du.upload_to_db(clean_products_df, 'dim_products')
 #du.upload_to_db(clean_orders_df, 'orders_table')
+#print("upload orders_table")
 #dc.clean_user_data(user_df)
