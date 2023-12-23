@@ -9,7 +9,7 @@ class DatabaseConnector:
         file_path = "C:/Users/arhan/OneDrive/Documents/AI_Core/MRDC/db_creds.yaml"
         with open(file_path, 'r') as file:
             creds = yaml.safe_load(file)
-        print("read creds")
+        #print("read creds")
         return creds
     
     def init_db_engine(self):
@@ -24,7 +24,7 @@ class DatabaseConnector:
         db_engine = create_engine(url)
         db_engine.execution_options(isolation_level='AUTOCOMMIT').connect()
         db_engine.connect()
-        print("init db engine")
+        #print("init db engine")
         return db_engine
 
     def list_db_tables(self):
@@ -33,7 +33,7 @@ class DatabaseConnector:
         metadata.reflect(bind=engine)
         table_names = metadata.tables.keys()
         table_list = ['legacy_store_details', 'legacy_users', 'orders_table']
-        print("list db tables")
+        #print("list db tables")
         return table_list
     
     def upload_to_db(self, df, table_name):
@@ -50,5 +50,5 @@ class DatabaseConnector:
         df_engine = create_engine(url)
         #db_engine.execution_options(isolation_level='AUTOCOMMIT').connect()
         #db_engine.connect()
-        print("upload")
+        #print("upload")
         df.to_sql(table_name, df_engine, index = False, if_exists = 'replace')

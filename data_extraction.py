@@ -26,8 +26,7 @@ class DataExtractor:
         store_df = pd.read_sql(store_details_query, rds_engine)
         user_df = pd.read_sql(user_query, rds_engine)
         orders_df = pd.read_sql(orders_query, rds_engine)
-        print("read rds")
-        return user_df #store_df, user_df, orders_df
+        return [user_df, store_df, orders_df]
     
     def retrieve_pdf_data(self, pdf_link):  
         '''
@@ -42,7 +41,6 @@ class DataExtractor:
         '''
         tabular_data = tabula.read_pdf(pdf_link, pages = 'all', multiple_tables = True)
         df = pd.concat(tabular_data, ignore_index=True)
-        print("retrieve pdf")
         return df
     
     def list_number_of_stores(self,store_number_endpoint, header_dict):
@@ -54,7 +52,6 @@ class DataExtractor:
         else:
             print(f"Request failed with status code: {response.status_code}")
             print(f"Response Text: {response.text}")
-        print("list # stores")
     
     def retrieve_stores_data(self, retrieve_store_endpoint, header_dict, number_stores):
         store_data_list = []
@@ -67,7 +64,6 @@ class DataExtractor:
                 print(f"Request failed with status code: {response.status_code}")
                 print(f"Response Text: {response.text}")
         store_data_df = pd.DataFrame(store_data_list)
-        print("retrieve store data")
         return store_data_df
     
     def extract_from_s3(self, s3_address):
@@ -84,5 +80,4 @@ class DataExtractor:
 
     def extract_from_json(self, json_link):
         df = pd.read_json(json_link)
-        print("json extract")
         return df
