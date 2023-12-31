@@ -17,6 +17,10 @@ class DataExtractor:
 
     # methods
     def reads_rds_table(self):
+        '''
+        Uses an instance of the DatabaseConnector class and uses Python's tabula-py library to read 
+        the pdf returns a pandas DataFrame.
+        '''
         dc = database_utils.DatabaseConnector()
         rds_engine = dc.init_db_engine()
         table_list = dc.list_db_tables
@@ -30,13 +34,12 @@ class DataExtractor:
     
     def retrieve_pdf_data(self, pdf_link):  
         '''
-        Uses the engine from init_db_engine to list all tables in the 
-        database 
+        Uses Python's tabula-py library to read the pdf
 
         Parameters:
         ----------
-        letter: str
-            The letter to be checked
+        pdf_link: str
+            The link to the pdf to obtain data from
 
         '''
         tabular_data = tabula.read_pdf(pdf_link, pages = 'all', multiple_tables = True)
@@ -54,6 +57,15 @@ class DataExtractor:
             print(f"Response Text: {response.text}")
     
     def retrieve_stores_data(self, retrieve_store_endpoint, header_dict, number_stores):
+        '''
+        Take the endpoint to retrieve a store as an argument and extracts all the stores from the API
+        saving them in a pandas DataFrame.
+
+        Parameters:
+        retrieve_store_endpoint: str
+            API endpoint to retrieve a store
+        header_dict: dictionary
+        '''
         store_data_list = []
         for i in range(0, number_stores):
             response = requests.get(f"{retrieve_store_endpoint}{i}", headers = header_dict)
@@ -67,6 +79,14 @@ class DataExtractor:
         return store_data_df
     
     def extract_from_s3(self, s3_address):
+        '''
+        Uses the boto3 package to download and extract the information returning a pandas DataFrame.
+
+        Parameters:
+        retrieve_store_endpoint: str
+            API endpoint to retrieve a store
+        header_dict: dictionary
+        '''
         access_key = 'AKIAUW2XISLH2YEKUQ4L'
         secret_key = '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'        
         bucket_name = "data-handling-public"
@@ -74,10 +94,16 @@ class DataExtractor:
         s3 = boto3.client('s3')#, access_key, secret_key)
         response = s3.get_object(Bucket=bucket_name, Key=object_key)
         df = pd.read_csv(io.BytesIO(response['Body'].read()))
-        #print("s3 extract")
         df.to_csv('s3_csv.csv', index = False)
         return df
 
     def extract_from_json(self, json_link):
+        '''
+        Uses pandas to extract the information from the json link a pandas DataFrame.
+
+        Parameters:
+        json_link: str
+            link to the json file
+        '''
         df = pd.read_json(json_link)
         return df

@@ -5,14 +5,32 @@ import psycopg2
 class DatabaseConnector:
     def __init__(self):
             pass
+    
     def read_db_creds(self):
+        '''
+        Uses Python's PyYAML library to read the credentials from the db_creds.yaml file and
+        returns a dictionary of the credentials
+        '''
         file_path = "C:/Users/arhan/OneDrive/Documents/AI_Core/MRDC/db_creds.yaml"
         with open(file_path, 'r') as file:
             creds = yaml.safe_load(file)
-        #print("read creds")
+        return creds
+    
+    def read_personal_creds(self):
+        '''
+        Uses Python's PyYAML library to read the credentials from the personal_creds.yaml file and
+        returns a dictionary of the credentials
+        '''
+        file_path = "C:/Users/arhan/OneDrive/Documents/AI_Core/MRDC/personal_creds.yaml"
+        with open(file_path, 'r') as file:
+            creds = yaml.safe_load(file)
         return creds
     
     def init_db_engine(self):
+        '''
+        Reads the credentials from the return of read_db_creds and initialises and returns an 
+        sqlalchemy database engine.
+        '''
         credentials = self.read_db_creds()
         from sqlalchemy import create_engine
         username = credentials['RDS_USER']
@@ -24,28 +42,40 @@ class DatabaseConnector:
         db_engine = create_engine(url)
         db_engine.execution_options(isolation_level='AUTOCOMMIT').connect()
         db_engine.connect()
-        #print("init db engine")
         return db_engine
 
     def list_db_tables(self):
+        '''
+        Lists all the tables in the database
+        '''
         engine = self.init_db_engine()
         metadata = MetaData()
         metadata.reflect(bind=engine)
         table_names = metadata.tables.keys()
         table_list = ['legacy_store_details', 'legacy_users', 'orders_table']
-        #print("list db tables")
         return table_list
     
     def upload_to_db(self, df, table_name):
+        '''
+        Uploads the dataframe to the correct table using sqlalchemy
+
+        Parameters:
+        df: pandas dataframe
+            The dataframe to be uploaded to the different table
+        table_name: str
+            The name of the table to which the dataframe must be uploaded
+        '''
         engine = self.init_db_engine()
         metadata = MetaData()
         metadata.reflect(bind=engine)
         table_names = metadata.tables.keys()
-        username = 'postgres'
-        password = 'FlatEarth[00]'
-        host = 'localhost'
-        port = '5433'
-        database = 'sales_data'
+        personal_credentials = self.read_personal_creds()
+        from sqlalchemy import create_engine
+        username = personal_credentials['USER']
+        password = personal_credentials['PASSWORD']
+        host = personal_credentials['HOST']
+        port = personal_credentials['PORT']
+        database = personal_credentials['DATABASE']
         url = f"postgresql://{username}:{password}@{host}:{port}/{database}"
         df_engine = create_engine(url)
         #db_engine.execution_options(isolation_level='AUTOCOMMIT').connect()
