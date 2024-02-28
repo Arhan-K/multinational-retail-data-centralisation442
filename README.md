@@ -1,10 +1,10 @@
 # Project Description
-This project entailed extracting, cleaning, processing, and analysing retail data for a Multinational Company selling various goods in different locations around the globe. The data was provided in a form that was spread across different sources and formats, which rendered a detailed study and analysis of the data difficult. The objective of this project was to compile all the sales data from the various sources into a coherent database, so that it can be analysed easily in order to extract crucial insights to inform business decisions.
+This project entailed extracting, cleaning, processing, and analysing retail data for a Multinational Company selling various goods in different locations around the globe. The data was provided in a form that was spread across different sources and formats, which rendered a detailed study and analysis of the data difficult. The objective of this project was to compile all the sales data from various sources into a coherent database so that it can be analysed easily in order to extract crucial insights to inform business decisions.
 This project gave me a great introduction to the field of data science and data analysis, by providing me with a simulated experience of analysing data to extract insights for retail purposes.
 
 # File Structure:
 The code for this project is organised into 3 python files which perform various stages of the process:
-* data_extraction.py - This file uses the class 'DataExtractor' containing methods which extract data from various types of data sources, namely, CSV files, Web APIs, and an Amazon Web Services EC2 S3 bucket.
+* data_extraction.py - This file uses the class 'DataExtractor' containing methods that extract data from various types of data sources, namely, CSV files, Web APIs, and an Amazon Web Services EC2 S3 bucket.
 * database_utils.py - This file connects to the database and uploads data to a new database by use of the DatabaseConnector class.
 * data_cleaning.py - This class uses the 'DataCleaning' class containing methods to analyse and clean data from each of the data sources, getting rid of erroneous values and correcting errors with formatting.
 
@@ -33,6 +33,6 @@ The dim_store_details table was extracted in the form of a JSON file from a Web 
 * YAML
 
 The files in the project can be executed by running the following command:
-'''
+
 python {filename.py}
-'''
+
