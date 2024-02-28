@@ -35,4 +35,4 @@ The dim_store_details table was extracted in the form of a JSON file from a Web 
 The files in the project can be executed by running the following command:
 
 python {filename.py}
-
+'''
