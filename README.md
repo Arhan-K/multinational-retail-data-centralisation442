@@ -48,8 +48,8 @@ The DataExtractor() class in the script data_extraction.py contains the method r
 
 Similarly, the retrieve_pdf_data(), extract_from_s3(), and extract_from_json() methods in the same class return pandas DataFrames for the data stored as a pdf link and in an s3 bucket, and json link, respectively. This returns the tables.
 
-The method list_number_of_stores() returns the number of stores from the API link, which is then used by the retrieve_stores_data() method to return a DataFrame for the stores_data table.
-'''
+The method list_number_of_stores() returns the number of stores from the API link, which is then used by the retrieve_stores_data() method to return a DataFrame for the stores_data table. <br>
+
 def list_number_of_stores(self,store_number_endpoint, header_dict):
         response = requests.get(store_number_endpoint, headers = header_dict)
         if response.status_code == 200:
@@ -59,4 +59,4 @@ def list_number_of_stores(self,store_number_endpoint, header_dict):
         else:
             print(f"Request failed with status code: {response.status_code}")
             print(f"Response Text: {response.text}")
-  '''
+  
