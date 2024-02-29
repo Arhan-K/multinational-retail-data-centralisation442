@@ -39,7 +39,7 @@ python {filename.py}
 
 # Connecting to the Database and Extracting Data:
 The database_utils.py file contains the DatabaseConnector() class with the method read_db_creds() which loads the login credentials used to connect to the engine and obtain the names of the tables that need to be extracted. These credentials are then input into the engine to establish a secure connection by use of the init_db_engine() method.
-```python
+```
 def init_db_engine(self):
         credentials = self.read_db_creds()
         from sqlalchemy import create_engine
@@ -53,10 +53,10 @@ def init_db_engine(self):
         db_engine.execution_options(isolation_level='AUTOCOMMIT').connect()
         db_engine.connect()
         return db_engine
-```python
+```
 
 The method list_db_tables() obtains the names of the tables that will be extracted for  this project.
-```python
+```
 def list_db_tables(self):
         '''
         Lists all the tables in the database
@@ -67,10 +67,10 @@ def list_db_tables(self):
         table_names = metadata.tables.keys()
         table_list = ['legacy_store_details', 'legacy_users', 'orders_table']
         return table_list
-```python
+```
 
 The upload_to_db() method then uploads the selected tables to the PgAdmin4 database.
-```python
+```
 def upload_to_db(self, df, table_name):
         '''
         Uploads the dataframe to the correct table using sqlalchemy
@@ -98,10 +98,10 @@ def upload_to_db(self, df, table_name):
         #db_engine.connect()
         #print("upload")
         df.to_sql(table_name, df_engine, index = False, if_exists = 'replace')
-```python
+```
 
 The DataExtractor() class in the script data_extraction.py contains the method reads_rds_table() which reads and returns the data from the tables provided in the AWS RDS bucket, namely orders_table and dim_users in the form of a pandas DataFrame.
-```python
+```
 def reads_rds_table(self):
         dc = database_utils.DatabaseConnector()
         rds_engine = dc.init_db_engine()
@@ -113,17 +113,17 @@ def reads_rds_table(self):
         user_df = pd.read_sql(user_query, rds_engine)
         orders_df = pd.read_sql(orders_query, rds_engine)
         return [user_df, store_df, orders_df]
-```python
+```
 
 Similarly, the retrieve_pdf_data(), extract_from_s3(), and extract_from_json() methods in the same class return pandas DataFrames for the data stored as a pdf link and in an s3 bucket, and json link, respectively. This returns the tables.
-```python
+```
 def retrieve_pdf_data(self, pdf_link):  
         tabular_data = tabula.read_pdf(pdf_link, pages = 'all', multiple_tables = True)
         df = pd.concat(tabular_data, ignore_index=True)
         return df
-```python
+```
 
-```python
+```
 def extract_from_s3(self, s3_address):
         access_key = 'AKIAUW2XISLH2YEKUQ4L'
         secret_key = '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'        
@@ -134,18 +134,18 @@ def extract_from_s3(self, s3_address):
         df = pd.read_csv(io.BytesIO(response['Body'].read()))
         df.to_csv('s3_csv.csv', index = False)
         return df
-```python
+```
 
 
-```python
+```
 def extract_from_json(self, json_link):        
         df = pd.read_json(json_link)
         return df
-```python
+```
 
 
 The method list_number_of_stores() returns the number of stores from the API link, which is then used by the retrieve_stores_data() method to return a DataFrame for the stores_data table. 
-```python
+```
 def list_number_of_stores(self,store_number_endpoint, header_dict):
         response = requests.get(store_number_endpoint, headers = header_dict)
         if response.status_code == 200:
