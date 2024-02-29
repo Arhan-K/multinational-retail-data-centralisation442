@@ -36,3 +36,14 @@ The files in the project can be executed by running the following command:
 
 python {filename.py}
 '''
+
+# Connecting to the Database and Extracting Data:
+The database_utils.py file contains the DatabaseConnector() class with the method read_db_creds() which loads the login credentials used to connect to the engine and obtain the names of the tables that need to be extracted. These credentials are then input into the engine to establish a secure connection by use of the init_db_engine() method.
+
+The method list_db_tables() ibtains the names of the tables that will be extracted for  this project.
+
+The upload_to_db() method then uploads the selected tables to the PgAdmin4 database.
+
+The DataExtractor() class in the script data_extraction.py contains the method reads_rds_table() which reads and returns the data from the tables provided in the AWS RDS bucket, namely orders_table and dim_users in the form of a pandas DataFrame.
+
+Similarly, the retrieve_pdf_data() and extract_from_s3() methods in the same class return pandas DataFrames for the data stored as a pdf link and in an s3 bucket. 
