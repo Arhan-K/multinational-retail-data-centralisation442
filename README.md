@@ -59,5 +59,3 @@ def list_number_of_stores(self,store_number_endpoint, header_dict):
         else:
             print(f"Request failed with status code: {response.status_code}")
             print(f"Response Text: {response.text}")
-  
-'''
