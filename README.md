@@ -172,3 +172,16 @@ def retrieve_stores_data(self, retrieve_store_endpoint, header_dict, number_stor
         store_data_df = pd.DataFrame(store_data_list)
         return store_data_df
 ```
+
+# Data Cleaning
+The data_cleaning.py file contains the DataCleaning() class which contains methods for cleaning the dataframes obtained from the DataExtractor class. A separate method is used for each table, which cleans specific erroneous values pertaining to them and returns a cleaned dataframe. 
+* The clean_user_data() and clean_card_data() methods remove incorrect and NULL values, and errors with dates. 
+* The clean_store_data() method corrects spelling mistakes and imprecise values for the country_code and continent, and removes the latitude column. 
+* The clean_products_data() method applies the appropriate conversion formulae to convert all values for the weights into kg and adds missing country_code values based on the locality of the stores. 
+* The clean_orders_data() column gets rids of the first_name and last_name columns, as well as the erroneous 1 column. 
+* The clean_dates_data() method removes erroneous values in the 'year' column.
+
+The cleaned dataframes are then uploaded to the database with the upload_to_db() method used by creating an instance of the DatabaseConnector() class in the database_utils.py script.
+
+# Querying the Data
+The orders_table_alter.sql file contains lists of different queries that should be run in order to return the required results from the database. The function of each block of queries is mentioned above the queries in the doscstring.
