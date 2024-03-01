@@ -3,10 +3,11 @@ This project entailed extracting, cleaning, processing, and analysing retail dat
 This project gave me a great introduction to the field of data science and data analysis, by providing me with a simulated experience of analysing data to extract insights for retail purposes.
 
 # File Structure:
-The code for this project is organised into 3 python files which perform various stages of the process:
+The code for this project is organised into 3 python files which perform various stages of the process. Apart from this, there is a PostgreSQL file containing different queries to obtain different aspects of the data, and 2 yaml files containing login credentials for the database engine and for personal login credentials. The files are described below:
 * data_extraction.py - This file uses the class 'DataExtractor' containing methods that extract data from various types of data sources, namely, CSV files, Web APIs, and an Amazon Web Services EC2 S3 bucket.
 * database_utils.py - This file connects to the database and uploads data to a new database by use of the DatabaseConnector class.
 * data_cleaning.py - This class uses the 'DataCleaning' class containing methods to analyse and clean data from each of the data sources, getting rid of erroneous values and correcting errors with formatting.
+
 
 # Data Sources:
 The retail data was organised  into various different sources in different formats which were then compiled and consolidated into a common database. The data sources used were:
