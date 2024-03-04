@@ -8,6 +8,22 @@ The code for this project is organised into 3 python files which perform various
 * database_utils.py - This file connects to the database and uploads data to a new database by use of the DatabaseConnector class.
 * data_cleaning.py - This class uses the 'DataCleaning' class containing methods to analyse and clean data from each of the data sources, getting rid of erroneous values and correcting errors with formatting.
 
+The files in the project can be executed by running the following command:
+```
+python {filename.py}
+```
+
+
+# Technologies Used:
+* Python (including the libraries Pandas, NumPy)
+* PostgreSQL
+* AWS
+* SQLalchemy
+* psycopg2
+* tabula-py
+* YAML
+
+
 
 # Data Sources:
 The retail data was organised  into various different sources in different formats which were then compiled and consolidated into a common database. The data sources used were:
@@ -23,20 +39,6 @@ The table dim_card_details was extracted from a PDF file stored in an AWS S3 buc
 
 ## RESTful API
 The dim_store_details table was extracted in the form of a JSON file from a Web API endpoint using HTTP GET requests.
-
-# Technologies Used:
-* Python (including the libraries Pandas, NumPy)
-* PostgreSQL
-* AWS
-* SQLalchemy
-* psycopg2
-* tabula-py
-* YAML
-
-The files in the project can be executed by running the following command:
-```
-python {filename.py}
-```
 
 # Connecting to the Database and Extracting Data:
 The database_utils.py file contains the DatabaseConnector() class with the method read_db_creds() which loads the login credentials used to connect to the engine and obtain the names of the tables that need to be extracted. These credentials are then input into the engine to establish a secure connection by use of the init_db_engine() method.
